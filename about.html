@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Tourist Planner</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    /* About Section */
+    #about {
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+    }
+
+    .about-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 300px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .card i {
+      font-size: 40px;
+      color: #00897b;
+      margin-bottom: 10px;
+    }
+
+    /* Contact Section */
+    #contact {
+      background: #ffffff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    input, textarea {
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px;
+      background: #00897b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #00695c;
+    }
+
+    #formFeedback {
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #263238;
+      color: #f0f0f0;
+    }
+  </style>
+</head>
+
+<body>
+<nav>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="destinations.html">Destinations</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="planner.html">Planner</a></li>
+  </ul>
+</nav>
+
+  <!-- About Section -->
+<section id="about">
+  <h2>About Us</h2>
+  <p>We help you explore the most iconic destinations with optimized routes and real-time insights.</p>
+
+  <div class="about-card">
+    <div class="card">
+      <i class="fas fa-map-marked-alt"></i>
+      <h3>Smart Routes</h3>
+      <p>Find the most efficient and scenic paths to your desired destinations.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-users"></i>
+      <h3>Crowd Insights</h3>
+      <p>Avoid crowded spots with real-time simulation of tourist density.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-calendar-alt"></i>
+      <h3>Custom Itinerary</h3>
+      <p>Plan trips that fit your pace and preferences using our smart planner.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section id="mission">
+  <h2>Our Mission</h2>
+  <p>To make travel smart, safe, and memorable by blending advanced technology with tourism simplicity.</p>
+</section>
+
+<!-- Team Section 
+<section id="team">
+  <h2>Meet the Team</h2>
+  <div class="about-card">
+    <div class="card">
+      <img src="images/aditi.jpg" alt="Aditi" style="border-radius: 50%; width: 100px; margin-bottom: 10px;">
+      <h3>Aditi Purohit</h3>
+      <p>Frontend Developer & Route Designer</p>
+    </div>
+   Add more members if needed 
+  </div>
+</section> -->
+
+<!-- Stats Section 
+<section id="stats">
+  <h2>Our Impact</h2>
+  <div class="about-card">
+    <div class="card">
+      <h3><span class="counter" data-target="30">0</span>+</h3>
+      <p>Tourist Spots Covered</p>
+    </div>
+    <div class="card">
+      <h3><span class="counter" data-target="5">0</span></h3>
+      <p>Optimization Algorithms</p>
+    </div>
+    <div class="card">
+      <h3><span class="counter" data-target="500">0</span>+</h3>
+      <p>Happy Travelers</p>
+    </div>
+  </div>
+</section> -->
+
+<!-- FAQ Section -->
+<section id="faq">
+  <h2>FAQs</h2>
+  <details>
+    <summary>How does your route optimization work?</summary>
+    <p>We use graph-based algorithms like Dijkstra's and Floyd-Warshall to determine shortest and efficient paths.</p>
+  </details>
+  <details>
+    <summary>Is the planner mobile-friendly?</summary>
+    <p>Yes, it is fully responsive and works on all devices.</p>
+  </details>
+  <details>
+    <summary>Is the app free?</summary>
+    <p>Absolutely! Our project is open for all tourists and travelers.</p>
+  </details>
+</section>
+  <!-- Optional JS (form handler) -->
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const feedback = document.getElementById('formFeedback');
+      feedback.textContent = "Thanks for reaching out! We'll get back to you soon.";
+      this.reset();
+    });
+  </script>
+
+  <!-- Counter Animation JS -->
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      counter.innerText = '0';
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / 200;
+
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(updateCount, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Destinations | Smart Tourist Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px 20px;
+      text-align: center;
+      color: #fff;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 12px 0;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .dest-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .dest-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dest-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .dest-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .dest-card h3 {
+      margin: 15px;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+
+    .dest-card p {
+      margin: 0 15px 20px;
+      font-size: 0.95rem;
+      color: #eee;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Explore Destinations</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="map.html">Map View</a>
+    <a href="planner.html">Planner</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <div class="container">
+    <h2 class="dest-title">Top Tourist Spots</h2>
+
+    <div class="dest-grid">
+
+      <div class="dest-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Rishikesh_view_across_bridge.jpg" alt="Rishikesh">
+        <h3>Rishikesh</h3>
+        <p>The yoga capital of the world, nestled in the Himalayas and known for its spiritual vibes and river rafting.</p>
+      </div>
+
+      <div class="dest-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/NeelKanth_Mahadev_Temple.JPG" alt="Neelkanth Temple">
+        <h3>Neelkanth Temple</h3>
+        <p>A sacred Hindu temple located in the dense forests near Rishikesh, dedicated to Lord Shiva.</p>
+      </div>
+
+      <div class="dest-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Ganga_aarti_haridwar_04.jpg" alt="Ganga Aarti">
+        <h3>Ganga Aarti - Haridwar</h3>
+        <p>One of the most spiritual experiences, the evening Ganga Aarti on the ghats is a must-see.</p>
+      </div>
+
+      <div class="dest-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Mussoorie_hills.jpg" alt="Mussoorie">
+        <h3>Mussoorie</h3>
+        <p>A beautiful hill station often called the 'Queen of the Hills', perfect for scenic views and pleasant weather.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Smart Tourist Planner
+  </footer>
+
+</body>
+</html>

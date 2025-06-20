@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Itinerary Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #dff9fb, #f1f2f6);
+      color: #333;
+    }
+
+    header {
+      background-color: #130f40;
+      padding: 20px 0;
+      text-align: center;
+      color: white;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input, select {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #130f40;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #30336b;
+    }
+
+    #output {
+      margin-top: 30px;
+      background-color: #f1f2f6;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .timeline li {
+      margin-bottom: 10px;
+      list-style: none;
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Smart Tourist Itinerary Planner</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="map.html">Map View</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="plannerForm">
+      <label for="start">Starting Location:</label>
+      <input type="text" id="start" placeholder="e.g., Dehradun" required>
+
+      <label for="destinations">Destinations (comma-separated):</label>
+      <input type="text" id="destinations" placeholder="e.g., Rishikesh, Haridwar" required>
+
+      <label for="time">Total Time Available (in hours):</label>
+      <input type="number" id="time" required>
+
+      <label for="startTime">Starting Time (HH:MM):</label>
+      <input type="time" id="startTime" value="09:00" required>
+
+      <label for="stopTime">Minutes per Location:</label>
+      <input type="number" id="stopTime" value="60" required>
+
+      <label for="travelMode">Travel Mode:</label>
+      <select id="travelMode">
+        <option value="car">Car (Fast)</option>
+        <option value="bike">Bike (Medium)</option>
+        <option value="walk">Walk (Slow)</option>
+      </select>
+
+      <button type="submit">Generate Itinerary</button>
+      <button type="button" onclick="exportPDF()">Export as PDF</button>
+    </form>
+
+    <div id="output"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Smart Tourist Planner | Designed by Aditi
+  </footer>
+
+  <script>
+    const supportedDestinations = [
+      "Rishikesh", "Haridwar", "Neelkanth", "Mussoorie", "Nainital",
+      "Jim Corbett", "Valley of Flowers", "Auli", "Badrinath", "Chopta"
+    ];
+
+    function formatTime(date) {
+      let h = date.getHours().toString().padStart(2, '0');
+      let m = date.getMinutes().toString().padStart(2, '0');
+      return `${h}:${m}`;
+    }
+
+    document.getElementById("plannerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  // Collect input data
+  const start = document.getElementById("start").value.trim();
+  const destinations = document.getElementById("destinations").value.split(",").map(d => d.trim());
+  const totalTime = parseInt(document.getElementById("time").value);
+
+  // Prepare data object to send
+  const data = {
+    start: start,
+    destinations: destinations,
+    total_time: totalTime
+  };
+
+  try {
+    // Send POST request to your Flask API
+    const response = await fetch('http://127.0.0.1:5000/api/plan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.statusText}`);
+    }
+
+    // Parse JSON response
+    const result = await response.json();
+
+    // Now display the result
+    let html = `<h3>📍 Your Custom Itinerary</h3><ul class="timeline">`;
+    html += `<li>🛫 Start at <strong>${start}</strong></li>`;
+
+    let currentTime = new Date();
+    currentTime.setHours(9, 0, 0, 0); // Starting time fixed or you can adapt
+
+    // Display the planned route received from backend
+    result.route.forEach((loc, i) => {
+      html += `<li>📍 <strong>${loc}</strong></li>`;
+    });
+
+    html += `</ul><p>🕐 Estimated Total Duration: ~${(result.total_time / 60).toFixed(1)} hours</p>`;
+    html += `<p>⚠️ Substitutions (if any): ${Object.entries(result.substitutions).map(([k,v]) => `${k} → ${v}`).join(", ") || "None"}</p>`;
+
+    document.getElementById("output").innerHTML = html;
+
+  } catch (error) {
+    alert("Error planning itinerary: " + error.message);
+  }
+});
+
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const contentElement = document.getElementById("output");
+  if (!contentElement || !contentElement.innerText.trim()) {
+    alert("Please generate the itinerary first!");
+    return;
+  }
+
+  // Extract only text (remove emojis and extra spaces)
+  const rawText = contentElement.innerText
+    .replace(/📍|🛫|🚗|→|🕐/g, '')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+
+  doc.setFont("Helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("Smart Tourist Itinerary", 20, 20);
+
+  doc.setFont("Helvetica", "normal");
+  doc.setFontSize(12);
+
+  const lines = doc.splitTextToSize(rawText, 170);
+  doc.text(lines, 20, 40);
+
+  doc.save("tourist_itinerary.pdf");
+}
+
+  </script>
+</body>
+</html>

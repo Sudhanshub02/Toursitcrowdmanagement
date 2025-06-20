@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Tourist Route Planner - Map</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f8f9fa;
+      color: #2f3542;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #2f3542, #57606f);
+      color: white;
+      padding: 30px 20px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 14px 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #2f3542;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #dfe4ea;
+    }
+
+    /* Form Styling */
+    form {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    form label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    form input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    form button {
+      padding: 12px 18px;
+      background-color: #2ed573;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #20bf6b;
+    }
+
+    /* Map Section */
+    #map {
+      height: 500px;
+      width: 90%;
+      max-width: 1100px;
+      margin: 30px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .map-subheading {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 10px;
+      color: #57606f;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background-color: #f1f2f6;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      form, #map {
+        width: 90%;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Smart Tourist Route Planner</h1>
+  </header>
+
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="destinations.html">Destinations</a>
+    <a href="planner.html">Planner</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <form id="locationForm">
+    <label for="source">Current Location:</label>
+    <input type="text" id="source" placeholder="e.g., Rishikesh" required>
+
+    <label for="destination">Destination:</label>
+    <input type="text" id="destination" placeholder="e.g., Neelkanth Temple" required>
+
+    <button type="submit">Find Shortest Path</button>
+  </form>
+
+  <div class="map-subheading">Real-Time Route Mapping with Interactive Controls</div>
+  <div id="map"></div>
+
+  <footer>
+    &copy; 2025 Smart Tourist Planner | Developed by Aditi
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const map = L.map('map').setView([30.0869, 78.2676], 13); // Default to Rishikesh
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let control;
+
+    document.getElementById('locationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const source = document.getElementById('source').value.trim();
+      const destination = document.getElementById('destination').value.trim();
+
+      const places = {
+        "Rishikesh": [30.0869, 78.2676],
+        "Neelkanth Temple": [30.0040, 78.4093],
+        "Haridwar": [29.9457, 78.1642]
+      };
+
+      const srcCoords = places[source];
+      const dstCoords = places[destination];
+
+      if (!srcCoords || !dstCoords) {
+        alert("Location not found. Try using Rishikesh, Neelkanth Temple, or Haridwar.");
+        return;
+      }
+
+      if (control) map.removeControl(control);
+
+      control = L.Routing.control({
+        waypoints: [
+          L.latLng(srcCoords),
+          L.latLng(dstCoords)
+        ],
+        routeWhileDragging: true
+      }).addTo(map);
+    });
+  </script>
+</body>
+</html>
